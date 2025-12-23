@@ -1,0 +1,49 @@
+<div class="accordion-item">
+    <!-- Название подразделения -->
+    <h2 class="accordion-header" id="heading{{ parent_id }}-{{ department.id }}">
+        <button class="accordion-button collapsed" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse{{ parent_id }}-{{ department.id }}">
+            {{ department.name }}
+        </button>
+    </h2>
+
+    <div id="collapse{{ parent_id }}-{{ department.id }}" class="accordion-collapse collapse">
+        <div class="accordion-body">
+
+            <!-- Список дочерних подразделений -->
+            {% if department.children.all %}
+                <div class="ms-3">
+                    {% for child in department.children.all %}
+                        {% include "company/department_node.html" with department=child parent_id=parent_id|add:"-"|add:department.id %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Сотрудники текущего подразделения -->
+            {% if department.employees.all %}
+                <div class="accordion mt-2" id="employeeAccordion{{ parent_id }}-{{ department.id }}">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingEmp{{ parent_id }}-{{ department.id }}">
+                            <button class="accordion-button collapsed" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseEmp{{ parent_id }}-{{ department.id }}">
+                                Сотрудники ({{ department.employees.count }})
+                            </button>
+                        </h2>
+                        <div id="collapseEmp{{ parent_id }}-{{ department.id }}" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <ul>
+                                    {% for employee in department.employees.all %}
+                                        <li>{{ employee.full_name }} — {{ employee.position }} — {{ employee.hire_date }} — {{ employee.salary }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
