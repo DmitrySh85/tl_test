@@ -42,7 +42,7 @@ python manage.py collectstatic --noinput
 После запуска проект будет доступен по адресу:
 
 ```
-http://localhost:8000/
+http://localhost:8001/
 ```
 Админка Django
 ```
